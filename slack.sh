@@ -12,6 +12,9 @@ username='Zabbix'
 # Add slack Attachments message color
 color="#00a0e9"
 
+# zabbix web url
+zabbix_url="http://127.0.0.1"
+
 # Get the Slack channel or user ($1) and Zabbix subject ($2 - hopefully either PROBLEM or RECOVERY/OK)
 to="$1"
 subject="$2"
@@ -33,6 +36,6 @@ fi
 message="$3"
 
 # Build our JSON payload and send it as a POST request to the Slack incoming web-hook URL
-payload="payload={\"channel\": \"${to//\"/\\\"}\", \"username\": \"${username//\"/\\\"}\", \"icon_emoji\": \"${emoji}\", \"attachments\": [{\"color\": \"${color}\", \"fields\": [{\"title\": \"${subject}\", \"value\": \"${message}\"}]}]}"
+payload="payload={\"channel\": \"${to//\"/\\\"}\", \"username\": \"${username//\"/\\\"}\", \"icon_emoji\": \"${emoji}\", \"attachments\": [{\"color\": \"${color}\", \"title\": \"${subject}\", \"title_link\": \"${zabbix_url}\", \"fields\": [{\"value\": \"${message}\"}]}]}"
 
 curl -m 5 --data-urlencode "${payload}" $url -A 'zabbix-slack-alertscript / https://github.com/ericoc/zabbix-slack-alertscript'
